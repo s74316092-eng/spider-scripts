@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScriptForge — Hub Gamer</title>
+<style>
+:root{
+  --bg:#080a12; --panel:#111522; --panel2:#171c2c; --line:#272e45;
+  --text:#f4f7ff; --muted:#8993ad; --accent:#7c5cff; --accent2:#00e5ff;
+  --good:#39e58c; --warn:#ffcc66; --danger:#ff5577;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,Arial;background:
+radial-gradient(circle at 20% 0%,#21164b 0,transparent 30%),
+radial-gradient(circle at 90% 10%,#073c4b 0,transparent 25%),var(--bg);color:var(--text)}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.topbar{height:72px;border-bottom:1px solid var(--line);background:#090b14dd;backdrop-filter:blur(14px);display:flex;align-items:center;gap:28px;padding:0 6%;position:sticky;top:0;z-index:10}
+.logo{font-weight:900;font-size:22px;letter-spacing:-1px}.logo span{color:var(--accent2)}
+.nav{display:flex;gap:8px}.nav button,.ghost{background:transparent;border:0;color:var(--muted);padding:10px 13px;border-radius:10px}.nav button.active,.nav button:hover{background:var(--panel2);color:white}
+.spacer{flex:1}.login{background:linear-gradient(135deg,var(--accent),#a24cff);color:white;border:0;padding:11px 18px;border-radius:11px;font-weight:800}
+main{width:min(1180px,92%);margin:auto}
+.hero{padding:70px 0 35px;display:grid;grid-template-columns:1.5fr 1fr;gap:30px;align-items:center}
+.eyebrow{color:var(--accent2);font-weight:800;text-transform:uppercase;letter-spacing:2px;font-size:12px}
+h1{font-size:clamp(40px,6vw,70px);line-height:.95;margin:12px 0 20px;letter-spacing:-4px}
+.hero p{color:var(--muted);font-size:17px;line-height:1.6;max-width:650px}
+.hero-actions{display:flex;gap:12px;margin-top:25px}.primary{background:linear-gradient(135deg,var(--accent),#a24cff);border:0;color:#fff;padding:13px 18px;border-radius:12px;font-weight:800}.secondary{background:var(--panel);border:1px solid var(--line);color:#fff;padding:13px 18px;border-radius:12px}
+.stats{background:linear-gradient(145deg,#15192a,#0e111b);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:0 20px 60px #0007}
+.stat{display:flex;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--line)}.stat:last-child{border:0}.stat b{font-size:22px}.stat span{color:var(--muted)}
+.toolbar{display:flex;gap:10px;align-items:center;margin:25px 0;flex-wrap:wrap}.search{flex:1;min-width:230px;background:var(--panel);border:1px solid var(--line);color:#fff;padding:13px 15px;border-radius:12px;outline:none}.filter{background:var(--panel);color:#fff;border:1px solid var(--line);padding:13px;border-radius:12px}
+.section-title{display:flex;justify-content:space-between;align-items:end;margin-top:35px}.section-title h2{margin:0;font-size:26px}.section-title p{margin:5px 0;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:18px 0 55px}
+.card{background:linear-gradient(145deg,#131827,#0e111b);border:1px solid var(--line);border-radius:18px;padding:18px;transition:.2s}.card:hover{transform:translateY(-3px);border-color:#4c5680}
+.card-top{display:flex;justify-content:space-between;gap:10px}.icon{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:#211c45;font-size:22px}.badge{font-size:11px;background:#162b25;color:var(--good);border:1px solid #24553f;padding:5px 8px;border-radius:999px;height:max-content}
+.card h3{margin:15px 0 7px}.desc{color:var(--muted);font-size:14px;line-height:1.5;min-height:42px}.meta{display:flex;justify-content:space-between;margin-top:15px;color:var(--muted);font-size:12px}.rating{color:var(--warn)}
+.tags{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}.tag{background:#1a2030;border:1px solid #293149;padding:4px 7px;border-radius:7px;color:#aeb8d0;font-size:11px}
+.card-actions{display:flex;gap:8px;margin-top:15px}.card-actions button{flex:1;padding:9px;border-radius:9px;border:1px solid var(--line);background:#171c2b;color:#fff}.card-actions button:hover{background:#222a40}
+.notice{padding:15px 17px;border:1px solid #34405f;background:#11182a;border-radius:14px;color:#aeb8d0;font-size:13px;margin-bottom:25px}
+.modal{position:fixed;inset:0;background:#000a;display:none;align-items:center;justify-content:center;padding:20px;z-index:30}.modal.show{display:flex}.dialog{width:min(600px,100%);background:#111522;border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:0 30px 100px #000}
+.dialog h2{margin-top:0}.field{margin:14px 0}.field label{display:block;color:#aeb8d0;font-size:13px;margin-bottom:7px}.field input,.field textarea,.field select{width:100%;background:#0b0e17;border:1px solid var(--line);color:#fff;padding:12px;border-radius:10px;outline:none}.field textarea{min-height:120px;resize:vertical}.close{float:right;background:transparent;border:0;color:#8892aa;font-size:20px}
+.empty{padding:35px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:15px;grid-column:1/-1}
+footer{border-top:1px solid var(--line);padding:30px 6%;color:var(--muted);font-size:13px}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}}
+@media(max-width:580px){.grid{grid-template-columns:1fr}.nav{display:none}h1{letter-spacing:-2px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="logo">SCRIPT<span>FORGE</span></div>
+  <nav class="nav">
+    <button class="active" onclick="showTab('explorar',this)">Explorar</button>
+    <button onclick="showTab('scripts',this)">Scripts</button>
+    <button onclick="showTab('executores',this)">Executores</button>
+    <button onclick="showTab('ranking',this)">Ranking</button>
+  </nav>
+  <div class="spacer"></div>
+  <button class="secondary" onclick="requireLogin('publicar')">＋ Publicar</button><button class="login" onclick="openLogin()">Entrar / Criar conta</button>
+</header>
+
+<main>
+<section class="hero">
+  <div>
+    <div class="eyebrow">Comunidade gamer • sem complicação</div>
+    <h1>Descubra. Publique.<br><span style="color:var(--accent2)">Jogue.</span></h1>
+    <p>Um hub onde jogadores compartilham scripts e ferramentas para seus projetos e experiências. Você pode navegar sem conta; conta é necessária apenas para publicar e avaliar.</p>
+    <div class="hero-actions">
+      <button class="primary" onclick="document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})">Explorar agora</button>
+      <button class="secondary" onclick="openLogin()">Quero publicar</button>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><span>Scripts publicados</span><b id="scriptCount">0</b></div>
+    <div class="stat"><span>Ferramentas listadas</span><b id="toolCount">0</b></div>
+    <div class="stat"><span>Avaliações</span><b id="ratingCount">0</b></div>
+    <div class="stat"><span>Usuários ativos</span><b id="userCount">0</b></div>
+  </div>
+</section>
+
+<div class="notice">🛡️ <b>Segurança:</b> a plataforma é para compartilhamento de código e ferramentas legítimas. Não hospede malware, roubo de contas, cheats ou conteúdo que prejudique outros jogadores.</div>
+
+<section id="catalogo">
+  <div class="section-title">
+    <div><h2 id="title">Em destaque</h2><p>Os conteúdos mais interessantes da comunidade.</p></div>
+  </div>
+  <div class="toolbar">
+    <input class="search" id="search" placeholder="🔎 Procurar scripts, ferramentas ou tags..." oninput="render()">
+    <select class="filter" id="type" onchange="render()"><option value="todos">Tudo</option><option value="script">Scripts</option><option value="executor">Executores / ferramentas</option></select>
+    <select class="filter" id="sort" onchange="render()"><option value="rating">Melhor avaliados</option><option value="new">Mais recentes</option><option value="downloads">Mais populares</option></select>
+  </div>
+  <div class="grid" id="cards"></div>
+</section>
+</main>
+
+<footer>© 2026 ScriptForge • Comunidade criada para jogadores • <span>Termos</span> • <span>Privacidade</span></footer>
+
+
+<div class="modal" id="publishModal">
+ <div class="dialog">
+  <button class="close" onclick="closeModal('publishModal')">×</button>
+  <h2>Publicar na comunidade</h2>
+  <p style="color:var(--muted)">Publique seu próprio script ou ferramenta. É necessário estar conectado.</p>
+  <div class="field"><label>Título</label><input id="pubTitle" placeholder="Nome do seu script"></div>
+  <div class="field"><label>Tipo</label><select id="pubType"><option value="script">Script</option><option value="executor">Executor / ferramenta</option></select></div>
+  <div class="field"><label>Descrição</label><textarea id="pubDesc" placeholder="Explique o que seu projeto faz..."></textarea></div>
+  <div class="field"><label>Código / conteúdo</label><textarea id="pubCode" placeholder="Cole aqui o código do seu projeto..."></textarea></div>
+  <button class="primary" style="width:100%" onclick="publish()">Publicar script</button>
+ </div>
+</div>
+
+<div class="modal" id="loginModal">
+ <div class="dialog">
+  <button class="close" onclick="closeModal('loginModal')">×</button>
+  <h2>Entrar ou criar conta</h2>
+  <p style="color:var(--muted)">Você não precisa de conta para navegar e baixar conteúdo. Para publicar e avaliar, entre na sua conta.</p>
+  <div class="field"><label>Nome de usuário</label><input id="username" placeholder="SeuNick"><div id="authSwitch" style="margin-top:12px;color:var(--muted);font-size:13px">Já tem conta? <button type="button" onclick="setAuthMode('login')">Entrar</button></div></div>
+  <div class="field"><label>E-mail</label><input id="email" type="email" placeholder="voce@email.com"></div>
+  <div class="field"><label>Senha</label><input id="password" type="password" placeholder="Mínimo de 6 caracteres"></div>
+  <button class="primary" style="width:100%" onclick="submitAuth()">Continuar</button>
+ </div>
+</div>
+
+<script>
+const items=[];
+
+
+async function loadStats(){
+ const r=await fetch('/api/stats'); if(!r.ok)return; const s=await r.json();
+ document.getElementById('scriptCount').textContent=s.scripts.toLocaleString('pt-BR');
+ document.getElementById('toolCount').textContent=s.tools.toLocaleString('pt-BR');
+ document.getElementById('ratingCount').textContent=s.ratings.toLocaleString('pt-BR');
+ document.getElementById('userCount').textContent=s.users.toLocaleString('pt-BR');
+}
+async function loadScripts(){
+ const r=await fetch('/api/scripts');
+ const data=await r.json();
+ items.length=0;
+ data.forEach(x=>items.push({
+   ...x,
+   icon:x.type==="script"?"⚡":"🧰",
+   desc:x.description,
+   date:new Date(x.createdAt).getTime()
+ }));
+ document.getElementById('scriptCount').textContent=items.filter(x=>x.type==="script").length.toLocaleString('pt-BR');
+ render();
+}
+
+
+let authMode="register";
+function setAuthMode(mode){
+ authMode=mode;
+ const title=document.querySelector("#loginModal h2");
+ if(title) title.textContent=mode==="login"?"Entrar na conta":"Criar conta";
+ const btn=document.querySelector("#loginModal .primary");
+ if(btn) btn.textContent=mode==="login"?"Entrar":"Criar conta";
+ const uf=document.getElementById("username");
+ if(uf) uf.parentElement.style.display=mode==="login"?"none":"";
+ const sw=document.getElementById("authSwitch");
+ if(sw) sw.innerHTML=mode==="login"
+ ? 'Não tem conta? <button type="button" onclick="setAuthMode(\'register\')">Criar conta</button>'
+ : 'Já tem conta? <button type="button" onclick="setAuthMode(\'login\')">Entrar</button>';
+}
+async function register(){
+ const username=document.getElementById("username").value.trim(), email=document.getElementById("email").value.trim(), password=document.getElementById("password").value;
+ if(!username||!email||!password){alert("Preencha usuário, e-mail e senha.");return}
+ const r=await fetch("/api/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username,email,password})});
+ const d=await r.json(); if(!r.ok){alert(d.error||"Não foi possível criar a conta.");return}
+ currentUser=d; localStorage.setItem("scriptforge_user",JSON.stringify(d)); closeModal("loginModal");
+ document.querySelector(".login").textContent="👤 "+d.username; await loadStats(); alert("Conta criada com sucesso!");
+}
+async function login(){
+ const email=document.getElementById("email").value.trim(), password=document.getElementById("password").value;
+ if(!email||!password){alert("Preencha e-mail e senha.");return}
+ const r=await fetch("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,password})});
+ const d=await r.json(); if(!r.ok){alert(d.error||"E-mail ou senha incorretos.");return}
+ currentUser=d; localStorage.setItem("scriptforge_user",JSON.stringify(d)); closeModal("loginModal");
+ document.querySelector(".login").textContent="👤 "+d.username; await loadStats(); alert("Login realizado com sucesso!");
+}
+function submitAuth(){return authMode==="login"?login():register();}
+function logout(){currentUser=null;localStorage.removeItem("scriptforge_user");document.querySelector(".login").textContent="Entrar";}
+
+function render(){
+ const q=document.getElementById('search').value.toLowerCase();
+ const type=document.getElementById('type').value;
+ const sort=document.getElementById('sort').value;
+ let data=items.filter(x=>(type==="todos"||x.type===type) && (x.title+x.desc+x.tags.join(" ")+x.author).toLowerCase().includes(q));
+ data.sort((a,b)=>sort==="rating"?b.rating-a.rating:sort==="downloads"?b.downloads-a.downloads:a.date-b.date);
+ const cards=document.getElementById('cards');
+ if(!data.length){cards.innerHTML='<div class="empty">Nenhum script publicado ainda.<br><br>🚀 Seja o primeiro jogador a publicar um script!</div>';return}
+ cards.innerHTML=data.map(x=>`
+ <article class="card">
+  <div class="card-top"><div class="icon">${x.icon}</div><div class="badge">✓ verificado</div></div>
+  <h3>${x.title}</h3>
+  <div class="desc">${x.desc}</div>
+  <div class="tags">${x.tags.map(t=>`<span class="tag">#${t}</span>`).join("")}</div>
+  <div class="meta"><span>👤 publicado por <b style="color:#d9def0">${x.author}</b></span><span class="rating">${x.rating ? "★ "+x.rating : "Novo"}</span></div>
+  <div class="meta"><span>${x.downloads.toLocaleString('pt-BR')} downloads</span><span>${x.type==="script"?"Script":"Ferramenta"}</span></div>
+  <div class="card-actions"><button onclick="viewItem('${x.title}')">Ver detalhes</button><button onclick="requireLogin('avaliar')">★ Avaliar</button><button onclick="requireLogin('baixar')">Baixar</button></div>
+ </article>`).join("");
+}
+function showTab(tab,btn){
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+ document.getElementById('title').textContent=tab==="scripts"?"Scripts da comunidade":tab==="executores"?"Executores e ferramentas":tab==="ranking"?"Ranking da comunidade":"Em destaque";
+ document.getElementById('type').value=tab==="scripts"?"script":tab==="executores"?"executor":"todos";render();
+}
+function openLogin(){document.getElementById('loginModal').classList.add('show')}
+function closeModal(id){document.getElementById(id).classList.remove('show')}
+function login(){const name=document.getElementById('username').value.trim()||"Jogador";closeModal('loginModal');alert("Conta  criada para "+name+"!\\nNo backend real, aqui entraria o sistema de autenticação.");}
+function requireLogin(action){openLogin()}
+function viewItem(title){alert("Página de detalhes de “"+title+"” — pronta para receber código, changelog, avaliações e botão de download no backend.");}
+loadScripts();
+</script>
+</body>
+</html>
